@@ -67,14 +67,25 @@ class TextStat
   def self.flesch_reading_ease(text, language = 'en_us')
     sentence_length    = avg_sentence_length(text)
     syllables_per_word = avg_syllables_per_word(text, language)
-    flesch = 206.835 - 1.015 * sentence_length - 84.6 * syllables_per_word
-    flesch.round(2)
+    if language == 'fr'
+      flesch = 206.835 - (1.015 * sentence_length) - (73.6 * syllables_per_word)
+    else
+      flesch = 206.835 - 1.015 * sentence_length - 84.6 * syllables_per_word
+    end
+
+    [100, flesch.round(2)].min
   end
 
   def self.flesch_kincaid_grade(text, language = 'en_us')
     sentence_length = avg_sentence_length(text)
     syllables_per_word = avg_syllables_per_word(text, language)
-    flesch = 0.39 * sentence_length + 11.8 * syllables_per_word - 15.59
+
+    if language == 'fr'
+      flesch = (0.55 * sentence_length) + (11.76 * syllables_per_word) - 15.79
+    else
+      flesch = 0.39 * sentence_length + 11.8 * syllables_per_word - 15.59
+    end
+
     flesch.round(1)
   end
 
@@ -146,7 +157,6 @@ class TextStat
   end
 
   def self.difficult_words(text, language = 'en_us', return_words = false)
-    require 'set'
     easy_words = Set.new
     File.read(File.join(dictionary_path, "#{language}.txt")).each_line do |line|
       easy_words << line.chop
@@ -160,7 +170,7 @@ class TextStat
       diff_words_set.add(value) if syllable_count(value, language) > 1
     end
     if return_words
-      diff_words_set
+      diff_words_set.to_a
     else
       diff_words_set.length
     end
@@ -235,7 +245,7 @@ class TextStat
 
     # Appending Flesch Reading Easy
     score = flesch_reading_ease(text)
-    if score < 100 && score >= 90
+    if score <= 100 && score >= 90
       grade.append(5)
     elsif score < 90 && score >= 80
       grade.append(6)
