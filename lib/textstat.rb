@@ -301,10 +301,8 @@ class TextStat
     grade.append(upper.to_i)
 
     # Finding the Readability Consensus based upon all the above tests
-    require 'counter'
-    d = Counter.new(grade)
-    final_grade = d.most_common(1)
-    score = final_grade[0][0]
+    grade_sorted_histogram = grade.tally.sort_by { |_k, v| -v }
+    score = grade_sorted_histogram.first[0]
 
     if float_output
       score.to_f
