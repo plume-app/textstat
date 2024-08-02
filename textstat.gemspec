@@ -35,8 +35,8 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['lib/**/*.rb', 'lib/dictionaries/ca.txt', 'lib/dictionaries/cs.txt', 'lib/dictionaries/en_us.txt', 'lib/dictionaries/nl.txt']
   spec.test_files    = ["spec/textstat_spec.rb", "lib/dictionaries/en_us.txt"]
 
-  spec.add_runtime_dependency     "text-hyphen", "~> 1.4", ">= 1.4.1"
-  spec.add_development_dependency "bundler", "~> 2.0.a"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_runtime_dependency     "text-hyphen", ">= 1.4.1"
+  spec.add_development_dependency "bundler", ">= 2.0"
+  spec.add_development_dependency "rake", ">= 13.0"
+  spec.add_development_dependency "rspec", ">= 3.0"
 end
